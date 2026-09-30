@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Aplikasi Presensi Guru SDN Mongisidi 3</title>
 
+  <!-- PWA: Ikon & Manifest (tampil sebagai logo sekolah saat "Tambahkan ke Layar Utama") -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#059669">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Presensi Mongisidi 3">
+
   <!-- CSS Frameworks & Libraries -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,8 +26,8 @@
 
   <style>
     body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-    .bg-primary { background: linear-gradient(135deg, #f97316, #c2410c); }
-    .nav-active { color: #ea580c; font-weight: 700; }
+    .bg-primary { background: linear-gradient(135deg, #10b981, #047857); }
+    .nav-active { color: #059669; font-weight: 700; }
     ::-webkit-scrollbar { height: 6px; width: 6px; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     .swal2-input, .swal2-textarea, .swal2-select { font-size: 13px !important; }
@@ -28,7 +40,7 @@
   <!-- LOGIN MODAL CONTAINER -->
   <div id="loginSection" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 text-center">
-      <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 text-orange-600 text-2xl">
+      <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 text-2xl">
         <i class="fa-solid fa-school"></i>
       </div>
       <h2 class="text-xl font-bold text-slate-800">Presensi SDN Mongisidi 3</h2>
@@ -37,13 +49,13 @@
       <div class="space-y-4 text-left">
         <div>
           <label class="text-xs font-semibold text-slate-600">ID User / NIP</label>
-          <input type="text" id="loginUserId" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-sm" placeholder="Masukkan ID User">
+          <input type="text" id="loginUserId" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm" placeholder="Masukkan ID User">
         </div>
         <div>
           <label class="text-xs font-semibold text-slate-600">Password</label>
-          <input type="password" id="loginPassword" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-sm" placeholder="Masukkan Password">
+          <input type="password" id="loginPassword" class="w-full mt-1 p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm" placeholder="Masukkan Password">
         </div>
-        <button onclick="doLogin()" class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl text-sm transition shadow-lg shadow-orange-500/30">
+        <button onclick="doLogin()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm transition shadow-lg shadow-emerald-500/30">
           Masuk Aplikasi
         </button>
       </div>
@@ -59,12 +71,12 @@
         </div>
         <div>
           <h1 class="font-bold text-sm leading-tight" id="headerUserName">Guru SDN Mongisidi 3</h1>
-          <p class="text-xs text-orange-100" id="headerUserRole">Guru Kelas • Guru</p>
+          <p class="text-xs text-emerald-100" id="headerUserRole">Guru Kelas • Guru</p>
         </div>
       </div>
       <div class="text-right">
         <span id="headerClock" class="text-xs font-mono font-bold block">--.--.-- WITA</span>
-        <span id="headerDate" class="text-[10px] text-orange-100">Memuat tanggal...</span>
+        <span id="headerDate" class="text-[10px] text-emerald-100">Memuat tanggal...</span>
       </div>
     </div>
   </header>
@@ -75,15 +87,28 @@
     <!-- TAB 1: HOME (PRESENSI KAMERA) -->
     <div id="tabHome" class="tab-content space-y-4">
 
-      <div class="bg-orange-50 border border-orange-200 text-orange-700 text-[11px] rounded-xl p-3 flex items-center justify-between">
+      <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] rounded-xl p-3 flex items-center justify-between">
         <div><i class="fa-solid fa-calendar-day mr-1"></i> Jadwal Hari <b id="homeHariIni">-</b></div>
         <div id="homeJadwalHariIni" class="text-right font-mono text-[10px] leading-tight">-</div>
       </div>
 
       <div class="bg-white p-4 rounded-2xl shadow-sm text-center">
         <div class="relative rounded-xl overflow-hidden bg-black aspect-video mb-3 shadow-inner">
-          <video id="webcam" autoplay playsinline class="w-full h-full object-cover"></video>
+          <video id="webcam" autoplay playsinline muted class="w-full h-full object-cover" style="transform: scaleX(-1);"></video>
           <canvas id="canvas" class="hidden"></canvas>
+
+          <div id="cameraErrorOverlay" class="hidden absolute inset-0 bg-black/90 flex flex-col items-center justify-center text-center p-4 text-white text-xs gap-2 z-10">
+            <i class="fa-solid fa-video-slash text-2xl text-red-400"></i>
+            <p id="cameraErrorMsg" class="leading-snug">Kamera tidak dapat diakses.</p>
+            <button onclick="initCamera()" class="mt-1 px-3 py-1.5 bg-emerald-600 rounded-lg text-[11px] font-semibold">
+              <i class="fa-solid fa-rotate mr-1"></i> Coba Lagi
+            </button>
+          </div>
+
+          <button onclick="initCamera()" title="Muat ulang kamera" class="absolute top-2 right-2 w-7 h-7 bg-black/50 hover:bg-black/70 rounded-full text-white text-xs flex items-center justify-center z-20">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+
           <div class="absolute bottom-2 left-2 right-2 bg-black/60 backdrop-blur-sm text-white text-[11px] p-2 rounded-lg flex justify-between items-center">
             <span><i class="fa-solid fa-location-dot text-red-400"></i> Jarak: <b id="textJarak">-</b> m</span>
             <span id="geofenceBadge" class="px-2 py-0.5 rounded text-[9px] bg-green-500 text-white">Geofence OK</span>
@@ -91,7 +116,7 @@
         </div>
 
         <div class="mb-4">
-          <textarea id="jurnalInput" rows="2" class="w-full text-xs p-3 border rounded-xl focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Jurnal Mengajar / Catatan Harian (Opsional)..."></textarea>
+          <textarea id="jurnalInput" rows="2" class="w-full text-xs p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Jurnal Mengajar / Catatan Harian (Opsional)..."></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -119,7 +144,7 @@
             <input type="date" id="filterEndDate" class="w-full text-xs p-2 border rounded-lg">
           </div>
         </div>
-        <button onclick="loadRiwayatData()" class="w-full py-2 bg-orange-600 text-white rounded-lg text-xs font-semibold">Tampilkan Data</button>
+        <button onclick="loadRiwayatData()" class="w-full py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold">Tampilkan Data</button>
       </div>
 
       <!-- CHART RESUME -->
@@ -163,7 +188,7 @@
         <h2 class="text-xs font-bold text-slate-700 uppercase"><i class="fa-solid fa-file-signature mr-1"></i> Form Pengajuan Izin / Cuti</h2>
         <div>
           <label class="text-[11px] font-semibold text-slate-600">Jenis Pengajuan</label>
-          <select id="jenisIzin" class="w-full mt-1 p-2.5 border rounded-xl text-xs">
+          <select id="jenisIzin" onchange="toggleDinasLuarFields()" class="w-full mt-1 p-2.5 border rounded-xl text-xs">
             <option value="Izin">Izin</option>
             <option value="Sakit">Sakit</option>
             <option value="Cuti">Cuti</option>
@@ -180,6 +205,19 @@
             <input type="date" id="izinSelesai" class="w-full mt-1 p-2 border rounded-xl text-xs">
           </div>
         </div>
+        <div id="dinasLuarJamWrapper" class="hidden bg-emerald-50 border border-emerald-200 rounded-xl p-3 space-y-2">
+          <p class="text-[10px] text-emerald-700 leading-snug"><i class="fa-solid fa-circle-info mr-1"></i>Isi jam mulai &amp; selesai dinas luar supaya jam kerja hari ini tetap terhitung di Rekap Jam Kerja.</p>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-[11px] font-semibold text-slate-600">Jam Mulai (Absen Masuk)</label>
+              <input type="time" id="izinJamMasukDL" class="w-full mt-1 p-2 border rounded-xl text-xs">
+            </div>
+            <div>
+              <label class="text-[11px] font-semibold text-slate-600">Jam Selesai (Absen Pulang)</label>
+              <input type="time" id="izinJamPulangDL" class="w-full mt-1 p-2 border rounded-xl text-xs">
+            </div>
+          </div>
+        </div>
         <div>
           <label class="text-[11px] font-semibold text-slate-600">Keterangan</label>
           <textarea id="izinKet" rows="2" class="w-full mt-1 p-2 border rounded-xl text-xs" placeholder="Alasan izin..."></textarea>
@@ -188,7 +226,7 @@
           <label class="text-[11px] font-semibold text-slate-600">Lampiran File (PDF/Foto)</label>
           <input type="file" id="izinFile" class="w-full mt-1 text-xs">
         </div>
-        <button onclick="submitIzin()" class="w-full py-3 bg-orange-600 text-white rounded-xl text-xs font-bold shadow-md">Kirim Pengajuan</button>
+        <button onclick="submitIzin()" class="w-full py-3 bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-md">Kirim Pengajuan</button>
       </div>
     </div>
 
@@ -199,7 +237,7 @@
       <div id="adminHub" class="admin-view space-y-4">
         <div class="bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-lg">
+            <div class="w-11 h-11 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
               <i class="fa-solid fa-user-shield"></i>
             </div>
             <div>
@@ -214,7 +252,7 @@
 
         <div class="grid grid-cols-3 gap-3">
           <button onclick="openAdminPanel('panelSummary'); loadAdminSummary();" class="bg-white p-3 rounded-2xl shadow-sm flex flex-col items-center gap-2 hover:shadow-md transition">
-            <div class="w-11 h-11 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-lg"><i class="fa-solid fa-chart-pie"></i></div>
+            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-chart-pie"></i></div>
             <span class="text-[10px] font-semibold text-slate-600 text-center leading-tight">Ringkasan<br>Hari Ini</span>
           </button>
           <button onclick="openAdminPanel('panelMatrix')" class="bg-white p-3 rounded-2xl shadow-sm flex flex-col items-center gap-2 hover:shadow-md transition">
@@ -230,7 +268,7 @@
             <span class="text-[10px] font-semibold text-slate-600 text-center leading-tight">Notifikasi<br>Izin</span>
           </button>
           <button onclick="openAdminPanel('panelUsers'); loadUsersList();" class="bg-white p-3 rounded-2xl shadow-sm flex flex-col items-center gap-2 hover:shadow-md transition">
-            <div class="w-11 h-11 rounded-xl bg-orange-200 text-orange-800 flex items-center justify-center text-lg"><i class="fa-solid fa-users-gear"></i></div>
+            <div class="w-11 h-11 rounded-xl bg-emerald-200 text-emerald-800 flex items-center justify-center text-lg"><i class="fa-solid fa-users-gear"></i></div>
             <span class="text-[10px] font-semibold text-slate-600 text-center leading-tight">Pengaturan<br>User</span>
           </button>
           <button onclick="openAdminPanel('panelSettings'); populateAdminSettingsForm();" class="bg-white p-3 rounded-2xl shadow-sm flex flex-col items-center gap-2 hover:shadow-md transition">
@@ -250,7 +288,7 @@
         <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3">
           <div class="flex gap-2">
             <input type="date" id="summaryDate" class="flex-1 p-2 border rounded-lg text-xs">
-            <button onclick="loadAdminSummary()" class="px-3 py-2 bg-orange-600 text-white rounded-lg text-xs font-bold">Tampilkan</button>
+            <button onclick="loadAdminSummary()" class="px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold">Tampilkan</button>
           </div>
 
           <div class="w-36 h-36 mx-auto py-1">
@@ -280,8 +318,9 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <div class="p-3 bg-slate-50 border-b">
+          <div class="p-3 bg-slate-50 border-b flex items-center justify-between">
             <span id="summaryFilterLabel" class="text-[10px] text-slate-400 uppercase font-semibold">Menampilkan: Semua Data</span>
+            <span class="text-[9px] text-slate-400"><i class="fa-solid fa-triangle-exclamation text-red-500"></i> = indikasi GPS mencurigakan</span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-[11px] text-left">
@@ -314,7 +353,7 @@
             <input type="date" id="rekapStart" class="p-2 border rounded-lg text-xs">
             <input type="date" id="rekapEnd" class="p-2 border rounded-lg text-xs">
           </div>
-          <button onclick="loadRekapMatrixPreview()" class="w-full py-2 bg-orange-600 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-eye mr-1"></i> Tampilkan Preview</button>
+          <button onclick="loadRekapMatrixPreview()" class="w-full py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-eye mr-1"></i> Tampilkan Preview</button>
           <button onclick="exportRekapMatrixExcel()" class="w-full py-2 bg-green-700 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-download mr-1"></i> Download Excel</button>
         </div>
 
@@ -348,7 +387,7 @@
             <label class="text-[10px] text-slate-500">Target Jam Kerja (mis. 37.5 jam)</label>
             <input type="number" step="0.5" id="jkTarget" value="37.5" class="w-full p-2 border rounded-lg text-xs">
           </div>
-          <button onclick="loadRekapJamKerja()" class="w-full py-2 bg-orange-600 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-eye mr-1"></i> Tampilkan</button>
+          <button onclick="loadRekapJamKerja()" class="w-full py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-eye mr-1"></i> Tampilkan</button>
           <button onclick="exportRekapJamKerjaExcel()" class="w-full py-2 bg-green-700 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-download mr-1"></i> Download Excel</button>
         </div>
 
@@ -392,7 +431,7 @@
             <button onclick="closeAdminPanel()" class="w-9 h-9 rounded-full bg-white shadow flex items-center justify-center text-slate-600"><i class="fa-solid fa-arrow-left"></i></button>
             <h2 class="font-bold text-slate-800 text-sm">Pengaturan User</h2>
           </div>
-          <button onclick="openUserForm()" class="w-9 h-9 rounded-full bg-orange-600 text-white flex items-center justify-center shadow"><i class="fa-solid fa-plus"></i></button>
+          <button onclick="openUserForm()" class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow"><i class="fa-solid fa-plus"></i></button>
         </div>
         <div id="usersListContainer" class="space-y-2"></div>
       </div>
@@ -407,8 +446,8 @@
         <!-- Koordinat & Radius: GLOBAL, cukup diatur 1 kali -->
         <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3">
           <div class="flex items-center justify-between">
-            <div class="text-[11px] font-bold text-orange-600">Koordinat &amp; Radius Sekolah (Global)</div>
-            <button onclick="useMyLocationForSettings()" class="text-[10px] text-orange-600 underline"><i class="fa-solid fa-location-crosshairs mr-1"></i>Pakai Lokasi Saya</button>
+            <div class="text-[11px] font-bold text-emerald-600">Koordinat &amp; Radius Sekolah (Global)</div>
+            <button onclick="useMyLocationForSettings()" class="text-[10px] text-emerald-600 underline"><i class="fa-solid fa-location-crosshairs mr-1"></i>Pakai Lokasi Saya</button>
           </div>
           <p class="text-[10px] text-slate-400 -mt-2">Koordinat &amp; radius ini berlaku untuk semua hari, cukup diatur satu kali di sini.</p>
           <div class="grid grid-cols-2 gap-2">
@@ -416,11 +455,12 @@
             <input type="number" step="any" id="cfgLng" placeholder="Longitude" class="p-2 border rounded-lg text-xs">
           </div>
           <input type="number" id="cfgRadius" placeholder="Radius Maksimal Absen (Meter)" class="w-full p-2 border rounded-lg text-xs">
+          <button onclick="saveLocationSettings()" class="w-full py-2.5 bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-md">Simpan Koordinat &amp; Radius</button>
         </div>
 
         <!-- Jadwal Per Hari -->
         <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3">
-          <div class="text-[11px] font-bold text-orange-600">Jam Kerja &amp; Kunci Lokasi per Hari</div>
+          <div class="text-[11px] font-bold text-emerald-600">Jam Kerja &amp; Kunci Lokasi per Hari</div>
           <div class="grid grid-cols-6 gap-1" id="daySelectorTabs"></div>
 
           <div class="grid grid-cols-2 gap-2 pt-1">
@@ -453,12 +493,11 @@
             </select>
           </div>
 
-          <button onclick="copyDaySettingsToAllDays()" class="w-full py-2 bg-orange-50 text-orange-700 border border-orange-200 rounded-lg text-[11px] font-semibold">
+          <button onclick="copyDaySettingsToAllDays()" class="w-full py-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-[11px] font-semibold">
             <i class="fa-solid fa-copy mr-1"></i> Terapkan Jadwal Hari Ini ke Semua Hari
           </button>
+          <button onclick="saveScheduleSettings()" class="w-full py-2.5 bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-md">Simpan Jam Kerja &amp; Kunci Lokasi</button>
         </div>
-
-        <button onclick="saveAdminSettings()" class="w-full py-2.5 bg-orange-700 text-white rounded-lg text-xs font-bold shadow-md">Simpan Pengaturan</button>
       </div>
 
     </div>
@@ -498,7 +537,10 @@
 
     let currentUser = null;
     let appSettings = {};
-    let currentGeo = { lat: 0, lng: 0, distance: 99999 };
+    let currentGeo = { lat: 0, lng: 0, distance: 99999, accuracy: null };
+    let geoHistory = []; // riwayat titik GPS terakhir, dipakai untuk deteksi kejanggalan (fake GPS)
+    const GEO_HISTORY_MAX = 6;
+    const GEO_HISTORY_WINDOW_MS = 90 * 1000;
 
     let chartInstance = null;
     let lastRiwayatData = [];
@@ -572,9 +614,53 @@
      * KAMERA & LOKASI (GEOFENCE)
      * ======================================================================== */
     function initCamera() {
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
-        .then(stream => { document.getElementById('webcam').srcObject = stream; })
-        .catch(err => { console.log('Camera error:', err); });
+      const video = document.getElementById('webcam');
+      const overlay = document.getElementById('cameraErrorOverlay');
+      overlay.classList.add('hidden');
+
+      // Hentikan stream lama dulu (kalau ada) supaya tidak bentrok saat kamera dimuat ulang
+      if (video.srcObject) {
+        video.srcObject.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+      }
+
+      tryStartCamera({ video: { facingMode: { ideal: 'user' } }, audio: false });
+    }
+
+    function tryStartCamera(constraints) {
+      const video = document.getElementById('webcam');
+      navigator.mediaDevices.getUserMedia(constraints)
+        .then(stream => {
+          video.srcObject = stream;
+          // Beberapa browser mobile butuh play() eksplisit, atribut autoplay saja kadang gagal diam-diam.
+          video.play().catch(() => {});
+          document.getElementById('cameraErrorOverlay').classList.add('hidden');
+        })
+        .catch(err => {
+          console.log('Camera error:', err);
+          // Kalau constraint facingMode ditolak perangkat (bukan soal izin), coba ulang dengan constraint paling umum.
+          const isPermissionIssue = (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError');
+          if (constraints.video && constraints.video.facingMode && !isPermissionIssue) {
+            return tryStartCamera({ video: true, audio: false });
+          }
+          showCameraError(err);
+        });
+    }
+
+    function showCameraError(err) {
+      const pesanMap = {
+        'NotAllowedError': 'Izin kamera ditolak. Ketuk ikon kamera/gembok di address bar browser, izinkan akses kamera, lalu muat ulang halaman.',
+        'PermissionDeniedError': 'Izin kamera ditolak. Ketuk ikon kamera/gembok di address bar browser, izinkan akses kamera, lalu muat ulang halaman.',
+        'NotFoundError': 'Kamera tidak ditemukan di perangkat ini.',
+        'DevicesNotFoundError': 'Kamera tidak ditemukan di perangkat ini.',
+        'NotReadableError': 'Kamera sedang dipakai aplikasi lain (mis. WhatsApp/Zoom). Tutup aplikasi tersebut, lalu tekan "Coba Lagi".',
+        'TrackStartError': 'Kamera sedang dipakai aplikasi lain (mis. WhatsApp/Zoom). Tutup aplikasi tersebut, lalu tekan "Coba Lagi".',
+        'OverconstrainedError': 'Kamera pada perangkat ini tidak mendukung pengaturan yang diminta.',
+        'SecurityError': 'Akses kamera diblokir karena halaman tidak dibuka lewat koneksi aman (HTTPS).'
+      };
+      const msg = pesanMap[err.name] || 'Tidak dapat mengakses kamera. Pastikan browser mendukung dan izin kamera sudah diberikan, lalu coba lagi.';
+      document.getElementById('cameraErrorMsg').innerText = msg;
+      document.getElementById('cameraErrorOverlay').classList.remove('hidden');
     }
 
     function initLocation() {
@@ -582,9 +668,69 @@
         navigator.geolocation.watchPosition(pos => {
           currentGeo.lat = pos.coords.latitude;
           currentGeo.lng = pos.coords.longitude;
+          currentGeo.accuracy = pos.coords.accuracy;
+
+          geoHistory.push({ lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy, ts: Date.now() });
+          const cutoff = Date.now() - GEO_HISTORY_WINDOW_MS;
+          geoHistory = geoHistory.filter(g => g.ts >= cutoff).slice(-GEO_HISTORY_MAX);
+
           checkGeofenceDistance();
-        });
+        }, err => { console.log('Geolocation error:', err); }, { enableHighAccuracy: true });
       }
+    }
+
+    /* ==========================================================================
+     * DETEKSI KEJANGGALAN GPS (INDIKASI FAKE GPS)
+     * Catatan jujur: browser TIDAK bisa memastikan 100% apakah GPS itu asli atau
+     * palsu (itu hanya bisa lewat API native Android). Fungsi ini hanya menyaring
+     * pola-pola paling umum dari aplikasi fake GPS: lompatan lokasi yang mustahil
+     * secara fisik, titik yang diam sempurna tanpa noise alami, dan akurasi yang
+     * tidak wajar. Kasus berat (lompatan lokasi) diblokir; kasus ringan tetap
+     * diizinkan absen tapi dicatat untuk ditinjau Admin (menghindari salah blokir
+     * guru yang GPS-nya memang sedang bagus/stabil).
+     * ======================================================================== */
+    function haversineMeters(lat1, lng1, lat2, lng2) {
+      const R = 6371e3;
+      const phi1 = lat1 * Math.PI / 180, phi2 = lat2 * Math.PI / 180;
+      const dPhi = (lat2 - lat1) * Math.PI / 180;
+      const dLambda = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dPhi / 2) ** 2 + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dLambda / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function analyzeGeoAnomaly() {
+      const flags = [];
+
+      // 1) Lompatan lokasi mustahil (mis. berpindah ratusan km dalam hitungan detik)
+      for (let i = 1; i < geoHistory.length; i++) {
+        const prev = geoHistory[i - 1], curr = geoHistory[i];
+        const dtSec = (curr.ts - prev.ts) / 1000;
+        if (dtSec <= 0) continue;
+        const distM = haversineMeters(prev.lat, prev.lng, curr.lat, curr.lng);
+        const speedKmh = (distM / dtSec) * 3.6;
+        if (speedKmh > 250 && distM > 50) {
+          flags.push('LOMPATAN_LOKASI (~' + Math.round(speedKmh) + ' km/jam)');
+          break;
+        }
+      }
+
+      // 2) Titik diam sempurna (identik persis) dalam rentang waktu cukup lama -
+      //    GPS asli hampir selalu punya sedikit noise alami walau HP tidak bergerak.
+      if (geoHistory.length >= 3) {
+        const last3 = geoHistory.slice(-3);
+        const allIdentik = last3.every(g => g.lat === last3[0].lat && g.lng === last3[0].lng);
+        const spanMs = last3[last3.length - 1].ts - last3[0].ts;
+        if (allIdentik && spanMs >= 10000) {
+          flags.push('TITIK_STATIS_SEMPURNA');
+        }
+      }
+
+      // 3) Akurasi tidak wajar (sangat presisi, jarang terjadi pada GPS ponsel biasa)
+      if (currentGeo.accuracy !== null && currentGeo.accuracy !== undefined && currentGeo.accuracy <= 1) {
+        flags.push('AKURASI_TIDAK_WAJAR (' + currentGeo.accuracy + 'm)');
+      }
+
+      return flags;
     }
 
     function checkGeofenceDistance() {
@@ -733,6 +879,19 @@
         return Swal.fire('Diluar Jangkauan', 'Jarak Anda ' + currentGeo.distance + 'm dari sekolah. Maksimal ' + appSettings.maxRadiusMeter + 'm.', 'error');
       }
 
+      const gpsFlags = analyzeGeoAnomaly();
+      const gpsHardBlock = gpsFlags.some(f => f.startsWith('LOMPATAN_LOKASI'));
+
+      if (gpsHardBlock) {
+        return Swal.fire({
+          icon: 'error',
+          title: 'Lokasi GPS Tidak Wajar',
+          html: 'Sistem mendeteksi perpindahan lokasi yang mustahil secara fisik dalam waktu singkat (indikasi aplikasi fake GPS aktif). Nonaktifkan aplikasi fake GPS / pengaturan lokasi palsu di ponsel Anda, lalu tunggu beberapa detik dan coba absen kembali.'
+        });
+      }
+
+      window.__pendingGpsFlags = gpsFlags;
+
       if (tipe === 'MASUK') {
         Swal.fire({
           title: 'Pilih Shift Presensi',
@@ -741,7 +900,7 @@
           showCancelButton: true,
           confirmButtonText: 'Shift Pagi',
           cancelButtonText: 'Shift Siang',
-          confirmButtonColor: '#ea580c',
+          confirmButtonColor: '#059669',
           cancelButtonColor: '#d97706'
         }).then((result) => {
           let selectedShift = 'PAGI';
@@ -764,7 +923,17 @@
       canvas.height = video.videoHeight || 480;
 
       const ctx = canvas.getContext('2d');
+
+      // Gambar video dalam kondisi dibalik horizontal (mirror), supaya hasil foto
+      // yang tersimpan sama persis seperti yang terlihat guru di preview kamera
+      // (preview juga di-mirror lewat CSS transform: scaleX(-1) pada #webcam).
+      ctx.save();
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      ctx.restore();
+      // Context dikembalikan normal (tidak di-mirror) di atas, supaya semua teks
+      // banner di bawah ini digambar dalam orientasi biasa dan tetap terbaca.
 
       const bannerHeight = 85;
       ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
@@ -799,7 +968,8 @@
           jarak: currentGeo.distance,
           latLong: currentGeo.lat + ',' + currentGeo.lng,
           jurnal: jurnal,
-          photoBase64: photoBase64
+          photoBase64: photoBase64,
+          gpsFlags: window.__pendingGpsFlags || []
         })
       })
         .then(res => res.json())
@@ -866,7 +1036,7 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="p-2">
-            <b class="block text-slate-700">${r.nama}</b>
+            <b class="block text-slate-700">${r.nama}${r.gpsFlag && r.gpsFlag !== '-' ? ` <i class="fa-solid fa-triangle-exclamation text-red-500 text-[10px]" title="Indikasi GPS mencurigakan: ${r.gpsFlag}"></i>` : ''}</b>
             <span class="text-[9px] text-slate-400">${r.tanggal}${r.shift && r.shift !== '-' ? ' (' + r.shift + ')' : ''}</span>
           </td>
           <td class="p-2"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${statusBadgeClass(r.status)}">${r.status}</span></td>
@@ -878,9 +1048,9 @@
             <div>${r.jamPulang}</div>
             ${mapPulangUrl ? `<a href="${mapPulangUrl}" target="_blank" class="text-[9px] text-amber-600 hover:underline block font-sans"><i class="fa-solid fa-location-dot"></i> Peta</a>` : ''}
           </td>
-          <td class="p-2 text-center font-bold text-orange-600">${durasi}</td>
-          <td class="p-2 text-center">${r.fotoMasuk && r.fotoMasuk !== '-' ? `<a href="${r.fotoMasuk}" target="_blank" class="text-orange-600 underline text-[10px]">Foto</a>` : '-'}</td>
-          <td class="p-2 text-center">${r.fotoPulang && r.fotoPulang !== '-' ? `<a href="${r.fotoPulang}" target="_blank" class="text-orange-600 underline text-[10px]">Foto</a>` : '-'}</td>
+          <td class="p-2 text-center font-bold text-emerald-600">${durasi}</td>
+          <td class="p-2 text-center">${r.fotoMasuk && r.fotoMasuk !== '-' ? `<a href="${r.fotoMasuk}" target="_blank" class="text-emerald-600 underline text-[10px]">Foto</a>` : '-'}</td>
+          <td class="p-2 text-center">${r.fotoPulang && r.fotoPulang !== '-' ? `<a href="${r.fotoPulang}" target="_blank" class="text-emerald-600 underline text-[10px]">Foto</a>` : '-'}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -946,6 +1116,14 @@
       sel.innerHTML = opts.map(o => `<option value="${o}">${o}</option>`).join('');
     }
 
+    // Menampilkan/menyembunyikan field jam masuk & pulang manual, hanya untuk
+    // jenis pengajuan "Dinas Luar" (supaya jam kerja tetap terhitung).
+    function toggleDinasLuarFields() {
+      const jenis = document.getElementById('jenisIzin').value;
+      const wrapper = document.getElementById('dinasLuarJamWrapper');
+      wrapper.classList.toggle('hidden', jenis !== 'Dinas Luar');
+    }
+
     function submitIzin() {
       const jenis = document.getElementById('jenisIzin').value;
       const mulai = document.getElementById('izinMulai').value;
@@ -955,18 +1133,31 @@
 
       if (!mulai || !ket) return Swal.fire('Peringatan', 'Isi tanggal dan keterangan!', 'warning');
 
+      let jamMasukDL = "";
+      let jamPulangDL = "";
+      if (jenis === 'Dinas Luar') {
+        jamMasukDL = document.getElementById('izinJamMasukDL').value;
+        jamPulangDL = document.getElementById('izinJamPulangDL').value;
+        if ((jamMasukDL && !jamPulangDL) || (!jamMasukDL && jamPulangDL)) {
+          return Swal.fire('Peringatan', 'Isi jam mulai DAN jam selesai dinas luar (atau kosongkan keduanya)!', 'warning');
+        }
+        if (jamMasukDL && jamPulangDL && jamPulangDL <= jamMasukDL) {
+          return Swal.fire('Peringatan', 'Jam selesai dinas luar harus lebih besar dari jam mulai!', 'warning');
+        }
+      }
+
       Swal.showLoading();
 
       if (fileInput.files.length > 0) {
         const reader = new FileReader();
-        reader.onload = function (e) { sendIzinApi(jenis, mulai, selesai, ket, e.target.result, fileInput.files[0].name); };
+        reader.onload = function (e) { sendIzinApi(jenis, mulai, selesai, ket, e.target.result, fileInput.files[0].name, jamMasukDL, jamPulangDL); };
         reader.readAsDataURL(fileInput.files[0]);
       } else {
-        sendIzinApi(jenis, mulai, selesai, ket, "", "");
+        sendIzinApi(jenis, mulai, selesai, ket, "", "", jamMasukDL, jamPulangDL);
       }
     }
 
-    function sendIzinApi(jenis, mulai, selesai, ket, fileBase64, fileName) {
+    function sendIzinApi(jenis, mulai, selesai, ket, fileBase64, fileName, jamMasukDL, jamPulangDL) {
       fetch(BACKEND_URL, {
         method: 'POST',
         body: JSON.stringify({
@@ -978,7 +1169,9 @@
           tanggalSelesai: selesai,
           keterangan: ket,
           fileBase64: fileBase64,
-          fileName: fileName
+          fileName: fileName,
+          jamMasukDinasLuar: jamMasukDL || "",
+          jamPulangDinasLuar: jamPulangDL || ""
         })
       })
         .then(res => res.json())
@@ -987,6 +1180,10 @@
           if (res.status === 'success') {
             document.getElementById('izinKet').value = '';
             document.getElementById('izinFile').value = '';
+            document.getElementById('izinJamMasukDL').value = '';
+            document.getElementById('izinJamPulangDL').value = '';
+            document.getElementById('jenisIzin').value = 'Izin';
+            toggleDinasLuarFields();
             switchTab('Jurnal');
             loadRiwayatData();
           }
@@ -1028,7 +1225,7 @@
       const c = document.getElementById('daySelectorTabs');
       c.innerHTML = DAY_LIST.map(d => {
         const isActive = d === activeSettingsDay;
-        return `<button type="button" onclick="switchSettingsDay('${d}')" class="py-1.5 rounded-lg text-[10px] font-bold border transition ${isActive ? 'bg-orange-600 text-white border-orange-600' : 'bg-white text-slate-600 border-slate-200'}">${d.slice(0, 3)}</button>`;
+        return `<button type="button" onclick="switchSettingsDay('${d}')" class="py-1.5 rounded-lg text-[10px] font-bold border transition ${isActive ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-200'}">${d.slice(0, 3)}</button>`;
       }).join('');
     }
 
@@ -1067,27 +1264,19 @@
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Ya, Terapkan',
-        confirmButtonColor: '#ea580c',
+        confirmButtonColor: '#059669',
         cancelButtonText: 'Batal'
       }).then(result => {
         if (!result.isConfirmed) return;
         DAY_LIST.forEach(d => { jadwalHarianEdit[d] = Object.assign({}, source); });
         loadDayFormFields(activeSettingsDay);
-        Swal.fire({ icon: 'success', title: 'Diterapkan', text: 'Jadwal berhasil disalin ke semua hari. Jangan lupa klik Simpan Pengaturan.', timer: 2000, showConfirmButton: false });
+        Swal.fire({ icon: 'success', title: 'Diterapkan', text: 'Jadwal berhasil disalin ke semua hari. Jangan lupa klik Simpan Jam Kerja & Kunci Lokasi.', timer: 2000, showConfirmButton: false });
       });
     }
 
-    function saveAdminSettings() {
-      saveCurrentDayFieldsToState();
-
-      const payload = {
-        action: 'saveSettings',
-        latitude: document.getElementById('cfgLat').value,
-        longitude: document.getElementById('cfgLng').value,
-        maxRadiusMeter: document.getElementById('cfgRadius').value,
-        jadwalHarian: jadwalHarianEdit
-      };
-
+    // Kirim pengaturan ke backend. Hanya field yang ada di payload yang diperbarui
+    // di sheet, jadi menyimpan koordinat tidak menyentuh jadwal, dan sebaliknya.
+    function postSettings(payload) {
       Swal.showLoading();
       fetch(BACKEND_URL, { method: 'POST', body: JSON.stringify(payload) })
         .then(res => res.json())
@@ -1100,7 +1289,23 @@
           } else {
             Swal.fire('Gagal', res.message, 'error');
           }
-        });
+        })
+        .catch(() => Swal.fire('Gagal', 'Tidak dapat terhubung ke server.', 'error'));
+    }
+
+    // Tombol 1: hanya Koordinat & Radius
+    function saveLocationSettings() {
+      const lat = document.getElementById('cfgLat').value;
+      const lng = document.getElementById('cfgLng').value;
+      const radius = document.getElementById('cfgRadius').value;
+      if (!lat || !lng || !radius) return Swal.fire('Peringatan', 'Isi latitude, longitude, dan radius terlebih dahulu.', 'warning');
+      postSettings({ action: 'saveSettings', latitude: lat, longitude: lng, maxRadiusMeter: radius });
+    }
+
+    // Tombol 2: hanya Jam Kerja & Kunci Lokasi per Hari
+    function saveScheduleSettings() {
+      saveCurrentDayFieldsToState();
+      postSettings({ action: 'saveSettings', jadwalHarian: jadwalHarianEdit });
     }
 
     /* ==========================================================================
@@ -1129,7 +1334,7 @@
         div.className = 'bg-white p-3 rounded-xl shadow-sm flex items-center justify-between text-xs';
         div.innerHTML = `
           <div>
-            <div class="font-bold text-slate-800">${u.nama} <span class="ml-1 px-1.5 py-0.5 rounded text-[9px] ${u.role === 'Admin' ? 'bg-amber-100 text-amber-700' : 'bg-orange-100 text-orange-700'}">${u.role}</span></div>
+            <div class="font-bold text-slate-800">${u.nama} <span class="ml-1 px-1.5 py-0.5 rounded text-[9px] ${u.role === 'Admin' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">${u.role}</span></div>
             <div class="text-[10px] text-slate-500">ID: ${u.id} • ${u.jabatan || '-'}</div>
           </div>
           <div class="flex gap-1">
@@ -1269,7 +1474,7 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td class="p-2">
-            <b class="block text-slate-700">${d.nama}</b>
+            <b class="block text-slate-700">${d.nama}${d.gpsFlag && d.gpsFlag !== '-' ? ` <i class="fa-solid fa-triangle-exclamation text-red-500 text-[10px]" title="Indikasi GPS mencurigakan: ${d.gpsFlag}"></i>` : ''}</b>
             <span class="text-[9px] text-slate-400">${tanggalLabel}</span>
           </td>
           <td class="p-2">
@@ -1284,9 +1489,9 @@
             <div>${d.jamPulang}</div>
             ${mapPulangUrl ? `<a href="${mapPulangUrl}" target="_blank" class="text-[9px] text-amber-600 hover:underline block font-sans"><i class="fa-solid fa-location-dot"></i> Peta</a>` : ''}
           </td>
-          <td class="p-2 text-center font-bold text-orange-600">${d.durasi}</td>
-          <td class="p-2 text-center">${d.fotoMasuk && d.fotoMasuk !== '-' ? `<a href="${d.fotoMasuk}" target="_blank" class="text-orange-600 underline text-[10px]">Foto</a>` : '-'}</td>
-          <td class="p-2 text-center">${d.fotoPulang && d.fotoPulang !== '-' ? `<a href="${d.fotoPulang}" target="_blank" class="text-orange-600 underline text-[10px]">Foto</a>` : '-'}</td>
+          <td class="p-2 text-center font-bold text-emerald-600">${d.durasi}</td>
+          <td class="p-2 text-center">${d.fotoMasuk && d.fotoMasuk !== '-' ? `<a href="${d.fotoMasuk}" target="_blank" class="text-emerald-600 underline text-[10px]">Foto</a>` : '-'}</td>
+          <td class="p-2 text-center">${d.fotoPulang && d.fotoPulang !== '-' ? `<a href="${d.fotoPulang}" target="_blank" class="text-emerald-600 underline text-[10px]">Foto</a>` : '-'}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -1543,7 +1748,7 @@
           </div>
           <div class="text-[10px] text-slate-500">ID: ${r.idGuru} • Tanggal: ${r.tanggal}</div>
           ${r.jurnal && r.jurnal !== '-' ? `<div class="text-[11px] text-slate-600 italic">"${r.jurnal}"</div>` : ''}
-          <div>${hasFile ? `<a href="${r.fotoPulang}" target="_blank" class="text-orange-600 underline text-[10px]"><i class="fa-solid fa-paperclip mr-1"></i>Lihat File Lampiran</a>` : '<span class="text-[10px] text-slate-400">Tidak ada lampiran</span>'}</div>
+          <div>${hasFile ? `<a href="${r.fotoPulang}" target="_blank" class="text-emerald-600 underline text-[10px]"><i class="fa-solid fa-paperclip mr-1"></i>Lihat File Lampiran</a>` : '<span class="text-[10px] text-slate-400">Tidak ada lampiran</span>'}</div>
         `;
         c.appendChild(div);
       });
