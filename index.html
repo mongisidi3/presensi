@@ -924,16 +924,9 @@
 
       const ctx = canvas.getContext('2d');
 
-      // Gambar video dalam kondisi dibalik horizontal (mirror), supaya hasil foto
-      // yang tersimpan sama persis seperti yang terlihat guru di preview kamera
-      // (preview juga di-mirror lewat CSS transform: scaleX(-1) pada #webcam).
-      ctx.save();
-      ctx.translate(canvas.width, 0);
-      ctx.scale(-1, 1);
+      // Preview kamera di-mirror lewat CSS (#webcam), tetapi foto hasil dibuat
+      // TIDAK mirror: video digambar apa adanya (orientasi asli kamera).
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      ctx.restore();
-      // Context dikembalikan normal (tidak di-mirror) di atas, supaya semua teks
-      // banner di bawah ini digambar dalam orientasi biasa dan tetap terbaca.
 
       const bannerHeight = 85;
       ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
